@@ -1,1 +1,1 @@
-# stonks_bot
+# stonks_bot <3
