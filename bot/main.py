@@ -339,7 +339,7 @@ async def on_message(message):
                 cur_price = stock.get_price().iat[0,0]
                 total_assets += (float(cur_price) * v)
             total_assets += x["balance"]
-            options += "{}. ` <@{}> ` : ${} \n".format(count, x["user_id"], total_assets)
+            options += "{}. <@{}> : ${} \n".format(count, x["user_id"], total_assets)
             count+=1
         toEmbed.add_field(name = "TOP 10", value= options)
         await message.channel.send(embed=toEmbed)
