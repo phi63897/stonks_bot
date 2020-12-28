@@ -4,5 +4,5 @@ dnspython
 iexfinance
 pandas
 datetime
-dateutil.relativedelta
+dateutil
 matplotlib == 3.3.3
