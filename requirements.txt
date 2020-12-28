@@ -5,4 +5,4 @@ iexfinance
 pandas
 datetime
 dateutil.relativedelta
-matplotlib
+matplotlib == 3.3.3
