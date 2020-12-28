@@ -94,7 +94,8 @@ async def on_message(message):
         if msg.content == "1":
             await channel.send("{0.user} is a bot for helping beginner investors! We plan to add paper trading and helpful reference material for beginners!".format(client))
         elif msg.content == "2":
-            temp = "1. `$buy ticker dollar_amount` \n 2. `$resource` \n 3. `$def term` \n 4. `$sell ticker dollar_amount` \n 5. `$price ticker`\n 6. `$portfolio`"
+            temp = """1. `$buy ticker dollar_amount` \n 2. `$resource` \n 3. `$def term` 
+            4. `$sell ticker dollar_amount` \n 5. `$price ticker`\n 6. `$portfolio` \n 7. `$leaderboard`"""
             toEmbed = discord.Embed(title="Commands", description = temp)
             await channel.send(embed=toEmbed)
         elif msg.content == "3":
@@ -328,7 +329,7 @@ async def on_message(message):
             
     elif message.content.startswith("$leaderboard"):
         top_10 = users_db.find().sort({"balance":-1}).limit(10)
-        toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of money (balance + shares)")
+        toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
         options = ""
         count = 0
         for k,v in top_10.items():
