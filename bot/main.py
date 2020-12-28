@@ -51,7 +51,8 @@ def get_user_info(user):
     if not query: # if user does not exist add to users_db
         post = {"user_id": user, 
                 "balance": 100000, 
-                "shares": {}
+                "shares": {},
+                "total_assets": 100000
                 } # ex. {appl: {type: type, amt: int}}
         users_db.insert_one(post)
         return post
@@ -250,7 +251,8 @@ async def on_message(message):
             return
             
         toEmbed = discord.Embed(title="Portfolio", description= "{}'s portfolio".format(mention))
-        toEmbed.add_field(name = ":moneybag: Balance", value = "${:,}".format(lookup["balance"]), inline=False)
+        toEmbed.add_field(name = ":moneybag: Balance", value = "${:,.2f}".format(lookup["balance"]), inline=False)
+        new_total = lookup["balance"]
         if (len(lookup["shares"]) == 0):
             info = "None \n"
         else:
@@ -259,7 +261,10 @@ async def on_message(message):
                 stock = Stock(ticker, token = iex_token)
                 cur_price = stock.get_price().iat[0,0]
                 info += "`{}`: {:.3f} | ${:,.2f}\n".format(ticker.upper(), shares, shares*cur_price )
-        toEmbed.add_field(name = ":bank: Shares", value = info, inline=False)
+                new_total += shares*cur_price
+        users_db.update_one({'user_id':message.author.id}, {'$set': {"shares": lookup["total_assets"]}})
+        toEmbed.add_field(name = ":bank: Total Assets", value = "${:,.2f}.format(lookup["total_assets"]), inline=False)
+        toEmbed.add_field(name = ":chart_with_upwards_trend: Shares", value = info, inline=False)
         await message.channel.send(embed=toEmbed)
         return
     
@@ -329,18 +334,12 @@ async def on_message(message):
             
     elif message.content.startswith("$leaderboard"):
         # Create a new field -> total assets
-        top_10 = users_db.find().sort("balance",-1).limit(10)
+        top_10 = users_db.find().sort("total_assets",-1).limit(10)
         toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
         options = ""
         count = 1
         for x in top_10:
-            total_assets = 0
-            for k,v in x["shares"].items():
-                stock = Stock(k, token = iex_token)
-                cur_price = stock.get_price().iat[0,0]
-                total_assets += (float(cur_price) * v)
-            total_assets += x["balance"]
-            options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], total_assets)
+            options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
             count+=1
         toEmbed.add_field(name = "TOP 10", value= options)
         await message.channel.send(embed=toEmbed)
