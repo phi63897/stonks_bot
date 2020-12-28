@@ -94,14 +94,13 @@ async def on_message(message):
         if msg.content == "1":
             await channel.send("{0.user} is a bot for helping beginner investors! We plan to add paper trading and helpful reference material for beginners!".format(client))
         elif msg.content == "2":
-            #commands so far: new, resource, def
-            return
+            await channel.send("$buy ticker dollar_amount \n $resource \n $def term \n $sell ticker dollar_amount \n $price ticker\n $portfolio")
         elif msg.content == "3":
             return
         
     #handle $new command (introduction to bot, should create account)
     elif message.content == "$new":
-        
+        mention = "<@{}>".format(message.author.id)
         await message.channel.send("Hello {}, I'm {1.user} and I'm here to help you start investing! ".format(mention, client))
         await message.channel.send("All of my commands can be found through the $help menu!")
     
