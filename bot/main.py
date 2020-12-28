@@ -331,7 +331,7 @@ async def on_message(message):
         top_10 = users_db.find().sort("balance",-1).limit(10)
         toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
         options = ""
-        count = 0
+        count = 1
         for x in top_10:
             total_assets = 0
             for k,v in x["shares"].items():
@@ -339,7 +339,7 @@ async def on_message(message):
                 cur_price = stock.get_price().iat[0,0]
                 total_assets += (float(cur_price) * v)
             total_assets += x["balance"]
-            options += "{}. `<@{}>` : ${} \n".format(count, x["user_id"], total_assets)
+            options += "{}. ` <@{}> ` : ${} \n".format(count, x["user_id"], total_assets)
             count+=1
         toEmbed.add_field(name = "TOP 10", value= options)
         await message.channel.send(embed=toEmbed)
