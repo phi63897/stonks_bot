@@ -328,7 +328,9 @@ async def on_message(message):
             await message.channel.send("Sorry the requested stock does not exist!")
             
     elif message.content.startswith("$leaderboard"):
+        await message.channel.send("Test Find")
         top_10 = users_db.find().sort({"balance":-1}).limit(10)
+        await message.channel.send("Test Find")
         toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
         options = ""
         count = 0
