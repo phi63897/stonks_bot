@@ -1,5 +1,8 @@
-discord.py == 1.0.1
-pymongo == 3.11.2
-dnspython == 2.0.0
-iexfinance == 0.5.0
-pandas == 1.2.0
+discord.py
+pymongo
+dnspython
+iexfinance
+pandas
+datetime
+dateutil.relativedelta
+matplotlib
