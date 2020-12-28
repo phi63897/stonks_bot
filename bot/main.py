@@ -258,7 +258,7 @@ async def on_message(message):
             for ticker, shares in lookup["shares"].items():
                 stock = Stock(ticker, token = iex_token)
                 cur_price = stock.get_price().iat[0,0]
-                info += "`{}`: {:.3f} | ${:.2f}\n".format(ticker.upper(), shares, shares*cur_price )
+                info += "`{}`: {:.3f} | ${:,.2f}\n".format(ticker.upper(), shares, shares*cur_price )
         toEmbed.add_field(name = ":bank: Shares", value = info, inline=False)
         await message.channel.send(embed=toEmbed)
         return
