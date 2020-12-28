@@ -331,7 +331,7 @@ async def on_message(message):
             await message.channel.send("Sorry the requested stock does not exist!")
 
 
-    # handle $sell ticker amount; command to sell stock by $amount
+    # handle $dsell ticker amount; command to sell stock by $amount
     elif message.content.startswith("$dsell"):
         command = message.content.strip().split()
         lookup = get_user_info(message.author.id)
@@ -362,7 +362,7 @@ async def on_message(message):
         except:
             await message.channel.send("Sorry the requested stock does not exist!")
 
-    # handle $sell ticker amount; command to sell stock by shares
+    # handle $ssell ticker shares; command to sell stock by shares
     elif message.content.startswith("$ssell"):
         command = message.content.strip().split()
         lookup = get_user_info(message.author.id)
@@ -378,7 +378,7 @@ async def on_message(message):
             # check if amount is valid (cannot sell more than you have)
             if ticker not in lookup["shares"]:
                 await message.channel.send("Sorry you do not own any shares of {}!".format(ticker.upper()))
-            elif amount > lookup["shares"][ticker] * cur_price:
+            elif shares > lookup["shares"][ticker]:
                 await message.channel.send("Sorry the requested sell exceeds your amount of shares!")
             else:
                 new_balance = lookup["balance"] + (shares * float(cur_price))
