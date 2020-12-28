@@ -329,13 +329,12 @@ async def on_message(message):
             
     elif message.content.startswith("$leaderboard"):
         await message.channel.send("Test Find")
-        top_10 = users_db.find().sort("balance").limit(10)
-        await message.channel.send("Test Find")
+        top_10 = users_db.find().sort("balance",-1).limit(10)
         toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
         options = ""
         count = 0
-        for k,v in top_10.items():
-            options += "{}. {} : {}".format(count, k, v)
+        for x in top_10:
+            options += "{}. `{}` : {}".format(count, x["user_id"], x["balance"])
             count+=1
         toEmbed.add_field(name = "TOP 10", value= options)
         await message.channel.send(embed=toEmbed)
