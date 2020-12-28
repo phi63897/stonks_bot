@@ -325,6 +325,18 @@ async def on_message(message):
                 await message.channel.send("Success! You sold {:.3f} shares of {}".format(shares, ticker.upper()))
         except:
             await message.channel.send("Sorry the requested stock does not exist!")
+            
+    elif message.content.startswith("$leaderboard"):
+        top_10 = users_db.find().sort({"balance":-1}).limit(10)
+        toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of money (balance + shares)")
+        options = ""
+        count = 0
+        for k,v in top_10.items():
+            options += "{}. {} : {}".format(count, k, v)
+            count+=1
+        toEmbed.add_field(name = "TOP 10", value= options)
+        await message.channel.send(embed=toEmbed)
+        
 
             
 
