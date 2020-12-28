@@ -263,13 +263,13 @@ async def on_message(message):
                 info += "`{}`: {:.3f} | ${:,.2f}\n".format(ticker.upper(), shares, shares*cur_price )
                 new_total += shares*cur_price
         users_db.update_one({'user_id':message.author.id}, {'$set': {"total_assets": lookup["total_assets"]}})
-        toEmbed.add_field(name = ":bank: Total Assets", value = "${:,.2f}".format(lookup["total_assets"]), inline=False)
+        toEmbed.add_field(name = ":bank: Total Assets", value = "${:,.2f}".format(lookup["new_total"]), inline=False)
         toEmbed.add_field(name = ":chart_with_upwards_trend: Shares", value = info, inline=False)
         await message.channel.send(embed=toEmbed)
         return
     
-    # handle $buy ticker amount; command to buy stock with $amount 
-    elif message.content.startswith("$buy"):
+    # handle $buy ticker amount; command to buy stock with $amount
+    elif message.content.startswith("$dbuy"):
         command = message.content.strip().split()
         mention = "<@{}>".format(message.author.id)
         lookup = get_user_info(message.author.id)
@@ -299,10 +299,40 @@ async def on_message(message):
                 await message.channel.send("Success! You bought {:.3f} shares of {}".format(shares, ticker.upper()))
         except:
             await message.channel.send("Sorry the requested stock does not exist!")
-        
+    # handle $buy ticker shares; command to buy stock with # of shares
+    elif message.content.startswith("$sbuy"):
+        command = message.content.strip().split()
+        mention = "<@{}>".format(message.author.id)
+        lookup = get_user_info(message.author.id)
+        if len(command) != 3:
+            await message.channel.send("{} Please use format $buy <ticker> <shares>".format(mention))
+            return
+        ticker = command[1]
+        shares = float(command[2])
 
-    # handle $sell ticker amount; command to sell stock
-    elif message.content.startswith("$sell"):
+        try:
+            stock = Stock(ticker, token = iex_token)
+            cur_price = stock.get_price().iat[0,0]
+            if cur_price == None:
+                await message.channel.send("Sorry the requested stock {} is unavailable".format(ticker.upper()))
+            elif shares*cur_price > lookup["balance"]:
+                await message.channel.send("Sorry the requested buy exceeds your balance!")
+            else:
+                new_balance = lookup["balance"] - shares*cur_price
+                if ticker in lookup["shares"]:
+                    lookup["shares"][ticker] += shares
+                else:
+                    lookup["shares"][ticker] = shares
+
+                users_db.update_one({'user_id':message.author.id}, {'$set': {"shares": lookup["shares"]}})
+                users_db.update_one({'user_id':message.author.id}, {'$set': {"balance": new_balance }})
+                await message.channel.send("Success! You bought {:.3f} shares of {}".format(shares, ticker.upper()))
+        except:
+            await message.channel.send("Sorry the requested stock does not exist!")
+
+
+    # handle $sell ticker amount; command to sell stock by $amount
+    elif message.content.startswith("$dsell"):
         command = message.content.strip().split()
         lookup = get_user_info(message.author.id)
         if len(command) != 3:
@@ -325,7 +355,37 @@ async def on_message(message):
                 lookup["shares"][ticker] -= shares
                 if lookup["shares"][ticker] == 0:
                     lookup["shares"].pop(ticker)
-                
+
+                users_db.update_one({'user_id':message.author.id}, {'$set': {"shares": lookup["shares"]}})
+                users_db.update_one({'user_id':message.author.id}, {'$set': {"balance": new_balance }})
+                await message.channel.send("Success! You sold {:.3f} shares of {}".format(shares, ticker.upper()))
+        except:
+            await message.channel.send("Sorry the requested stock does not exist!")
+
+    # handle $sell ticker amount; command to sell stock by shares
+    elif message.content.startswith("$ssell"):
+        command = message.content.strip().split()
+        lookup = get_user_info(message.author.id)
+        if len(command) != 3:
+            await message.channel.send("Please use format $sell <ticker> <amount>")
+            return
+        ticker = command[1]
+        shares = float(command[2])
+        try:
+            stock = Stock(ticker, token = iex_token)
+            cur_price = stock.get_price().iat[0,0]
+            # shares: {{appl: amount}, {nvda: amount}}
+            # check if amount is valid (cannot sell more than you have)
+            if ticker not in lookup["shares"]:
+                await message.channel.send("Sorry you do not own any shares of {}!".format(ticker.upper()))
+            elif amount > lookup["shares"][ticker] * cur_price:
+                await message.channel.send("Sorry the requested sell exceeds your amount of shares!")
+            else:
+                new_balance = lookup["balance"] + (shares * float(cur_price))
+                lookup["shares"][ticker] -= shares
+                if lookup["shares"][ticker] == 0:
+                    lookup["shares"].pop(ticker)
+
                 users_db.update_one({'user_id':message.author.id}, {'$set': {"shares": lookup["shares"]}})
                 users_db.update_one({'user_id':message.author.id}, {'$set': {"balance": new_balance }})
                 await message.channel.send("Success! You sold {:.3f} shares of {}".format(shares, ticker.upper()))
