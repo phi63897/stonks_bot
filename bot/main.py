@@ -135,19 +135,19 @@ async def on_message(message):
         if msg.content == "1":
             toEmbed = discord.Embed(title="General Resources") 
             #format and add general resources
-            options = "1. `Investopedia: https://www.investopedia.com/articles/basics/06/invest1000.asp#what-kind-of-investor-are-you` \n"
-            options+= "2. `NerdWallet: https://www.nerdwallet.com/article/investing/how-to-start-investing` \n"
-            options+= "3. `NerdWallet: https://www.nerdwallet.com/article/investing/how-to-invest-in-stocks`\n"
-            options+= "4. `Investors.com: https://www.investors.com/how-to-invest/how-to-invest-in-stocks-stock-market-for-beginners` \n"
+            options = "1. `Investopedia:` https://www.investopedia.com/articles/basics/06/invest1000.asp#what-kind-of-investor-are-you \n"
+            options+= "2. `NerdWallet:` https://www.nerdwallet.com/article/investing/how-to-start-investing \n"
+            options+= "3. `NerdWallet:` https://www.nerdwallet.com/article/investing/how-to-invest-in-stocks\n"
+            options+= "4. `Investors.com:` https://www.investors.com/how-to-invest/how-to-invest-in-stocks-stock-market-for-beginners \n"
             toEmbed.add_field(name = "Help options", value= options)
             #send embedded general resources
             await channel.send(embed=toEmbed)
         elif msg.content == "2":
             toEmbed = discord.Embed(title="Online Brokers")
             #format and add online brokers
-            options = "1. `NerdWallet's Top 11 Online Brokers: https://www.nerdwallet.com/best/investing/online-brokers-for-beginners` \n"
-            options+= "2. `StockBrokers.com Top 5 Online Brokers: https://www.stockbrokers.com/guides/beginner-investors` \n"
-            options+= "3. `Motley Fool's The Ascent Top 8 Online Brokers https://www.fool.com/the-ascent/buying-stocks/best-online-stock-brokers-beginners` \n"
+            options = "1. `NerdWallet's Top 11 Online Brokers:` https://www.nerdwallet.com/best/investing/online-brokers-for-beginners \n"
+            options+= "2. `StockBrokers.com Top 5 Online Brokers:` https://www.stockbrokers.com/guides/beginner-investors \n"
+            options+= "3. `Motley Fool's The Ascent Top 8 Online Brokers:` https://www.fool.com/the-ascent/buying-stocks/best-online-stock-brokers-beginners \n"
         elif msg.content == "3":
             return
     
@@ -329,7 +329,7 @@ async def on_message(message):
             
     elif message.content.startswith("$leaderboard"):
         await message.channel.send("Test Find")
-        top_10 = users_db.find().sort({"balance":-1}).limit(10)
+        top_10 = users_db.find().sort("balance").limit(10)
         await message.channel.send("Test Find")
         toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
         options = ""
