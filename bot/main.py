@@ -100,6 +100,7 @@ async def on_message(message):
         
     #handle $new command (introduction to bot, should create account)
     elif message.content == "$new":
+        get_user_info(message.author.id)
         mention = "<@{}>".format(message.author.id)
         await message.channel.send("Hello {}, I'm {1.user} and I'm here to help you start investing! ".format(mention, client))
         await message.channel.send("All of my commands can be found through the $help menu!")
