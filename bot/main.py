@@ -75,9 +75,9 @@ async def on_message(message):
         #create embed object for help menu
         toEmbed = discord.Embed(title="investBot Help Menu", description= "{} please respond with a number 1-3".format(mention)) 
         #format and add help options
-        options = "1. about \n"
-        options+= "2. commands \n"
-        options+= "3. third field\n"
+        options = "1. `about` \n"
+        options+= "2. `commands` \n"
+        options+= "3. `third field` \n"
         toEmbed .add_field(name = "Help options", value= options)
 
         #send embeded help menu to channel
@@ -94,13 +94,14 @@ async def on_message(message):
         if msg.content == "1":
             await channel.send("{0.user} is a bot for helping beginner investors! We plan to add paper trading and helpful reference material for beginners!".format(client))
         elif msg.content == "2":
-            await channel.send("$buy ticker dollar_amount \n $resource \n $def term \n $sell ticker dollar_amount \n $price ticker\n $portfolio")
+            #commands so far: new, resource, def
+            return
         elif msg.content == "3":
             return
         
     #handle $new command (introduction to bot, should create account)
     elif message.content == "$new":
-        mention = "<@{}>".format(message.author.id)
+        get_user_info(message.author.id)
         await message.channel.send("Hello {}, I'm {1.user} and I'm here to help you start investing! ".format(mention, client))
         await message.channel.send("All of my commands can be found through the $help menu!")
     
@@ -112,9 +113,9 @@ async def on_message(message):
         #create embed object for help menu
         toEmbed = discord.Embed(title="investBot Resources", description= "{} please respond with a number 1-3".format(mention)) 
         #format and add resource options
-        options = "1. New investor! \n"
-        options+= "2. Online brokers \n"
-        options+= "3. third field\n"
+        options = "1. `New investor!` \n"
+        options+= "2. `Online brokers` \n"
+        options+= "3. `third field`\n"
         toEmbed.add_field(name = "Help options", value= options)
 
         #send embeded help menu to channel
@@ -131,19 +132,19 @@ async def on_message(message):
         if msg.content == "1":
             toEmbed = discord.Embed(title="General Resources") 
             #format and add general resources
-            options = "1. Investopedia: https://www.investopedia.com/articles/basics/06/invest1000.asp#what-kind-of-investor-are-you \n"
-            options+= "2. NerdWallet: https://www.nerdwallet.com/article/investing/how-to-start-investing \n"
-            options+= "3. NerdWallet: https://www.nerdwallet.com/article/investing/how-to-invest-in-stocks\n"
-            options+= "4. Investors.com: https://www.investors.com/how-to-invest/how-to-invest-in-stocks-stock-market-for-beginners/ \n"
+            options = "1. `Investopedia: https://www.investopedia.com/articles/basics/06/invest1000.asp#what-kind-of-investor-are-you` \n"
+            options+= "2. `NerdWallet: https://www.nerdwallet.com/article/investing/how-to-start-investing` \n"
+            options+= "3. `NerdWallet: https://www.nerdwallet.com/article/investing/how-to-invest-in-stocks`\n"
+            options+= "4. `Investors.com: https://www.investors.com/how-to-invest/how-to-invest-in-stocks-stock-market-for-beginners/` \n"
             toEmbed.add_field(name = "Help options", value= options)
             #send embedded general resources
             await channel.send(embed=toEmbed)
         elif msg.content == "2":
             toEmbed = discord.Embed(title="Online Brokers")
             #format and add online brokers
-            options = "1. NerdWallet's Top 11 Online Brokers: https://www.nerdwallet.com/best/investing/online-brokers-for-beginners \n"
-            options+= "2. StockBrokers.com Top 5 Online Brokers: https://www.stockbrokers.com/guides/beginner-investors \n"
-            options+= "3. Motley Fool's The Ascent Top 8 Online Brokers https://www.fool.com/the-ascent/buying-stocks/best-online-stock-brokers-beginners/ \n"
+            options = "1. `NerdWallet's Top 11 Online Brokers: https://www.nerdwallet.com/best/investing/online-brokers-for-beginners` \n"
+            options+= "2. `StockBrokers.com Top 5 Online Brokers: https://www.stockbrokers.com/guides/beginner-investors` \n"
+            options+= "3. `Motley Fool's The Ascent Top 8 Online Brokers https://www.fool.com/the-ascent/buying-stocks/best-online-stock-brokers-beginners/` \n"
         elif msg.content == "3":
             return
     
@@ -174,10 +175,10 @@ async def on_message(message):
         #create embed object for price menu
         toEmbed = discord.Embed(title="Price History", description= "{} please respond with a number 1-4".format(mention)) 
         #format and add history options
-        options = "1. 52 week history! \n"
-        options+= "2. 26 week history! \n"
-        options+= "3. 1 month history!\n"
-        options+= "4. 1 week history!"
+        options = "1. `52 week history!` \n"
+        options+= "2. `26 week history!` \n"
+        options+= "3. `1 month history!`\n"
+        options+= "4. `1 week history!`"
         toEmbed.add_field(name = "History options", value= options)
         
         #send embeded history menu to channel
