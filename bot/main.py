@@ -334,7 +334,13 @@ async def on_message(message):
         options = ""
         count = 0
         for x in top_10:
-            options += "{}. `{}` : {}".format(count, x["user_id"], x["balance"])
+            total_assets = 0
+            for k,v in x["shares"]:
+                stock = Stock(k, token = iex_token)
+                cur_price = stock.get_price().iat[0,0]
+                total_assets += (float(cur_price) * v)
+            total_assets += x["balance"]
+            options += "{}. `<@{}>` : {} \n".format(count, x["user_id"], total_assets)
             count+=1
         toEmbed.add_field(name = "TOP 10", value= options)
         await message.channel.send(embed=toEmbed)
