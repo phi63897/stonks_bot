@@ -396,7 +396,7 @@ async def on_message(message):
             
     elif message.content.startswith("$leaderboard"):
         # Create a new field -> total assets
-        top_10 = []
+        top_10 = [-sys.maxsize]
         for x in users_db.find():
             # Calculate total assets
             new_total = x["balance"]
@@ -407,7 +407,7 @@ async def on_message(message):
             users_db.update_one({'user_id':x["user_id"]}, {'$set': {"total_assets": new_total}})
             # Check if value is greater than first..-> tenth ->shift
             for y in range(10):
-                if new_total >= y:
+                if new_total >= top_10[y]:
                     top_10.insert(y, x)
                     break
             if len(top_10) == 11:
