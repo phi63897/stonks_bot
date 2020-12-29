@@ -397,7 +397,7 @@ async def on_message(message):
             
     elif message.content.startswith("$leaderboard"):
         # Create a new field -> total assets
-        top_10 = [{"total_assets":-sys.maxsize}]*10
+        top_10 = [{"user_id" : None, "total_assets":-sys.maxsize}]*10
         for x in users_db.find():
             # Calculate total assets
             new_total = x["balance"]
@@ -419,8 +419,9 @@ async def on_message(message):
         options = ""
         count = 1
         for x in top_10:
-            options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
-            count+=1
+            if x["user_id"] != None:
+                options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
+                count+=1
         toEmbed.add_field(name = "TOP 10", value= options)
         await message.channel.send(embed=toEmbed)
         
