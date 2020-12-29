@@ -396,7 +396,10 @@ async def on_message(message):
             
     elif message.content.startswith("$leaderboard"):
         # Create a new field -> total assets
-        top_10 = users_db.find().sort("total_assets",-1).limit(10)
+        for x in users_db.find():
+            print(x)
+        top_10 = []
+        for k,v in users_db["shares"].items()
         toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
         options = ""
         count = 1
