@@ -401,7 +401,7 @@ async def on_message(message):
             # Calculate total assets
             new_total = x["balance"]
             for t,s in x["shares"].items():
-                stock = Stock(ticker, token = iex_token)
+                stock = Stock(t, token = iex_token)
                 cur_price = stock.get_price().iat[0,0]
                 new_total += (cur_price*stock)
             users_db.update_one({'user_id':x["user_id"]}, {'$set': {"total_assets": new_total}})
@@ -414,7 +414,7 @@ async def on_message(message):
                 top_10.pop()
        
         toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
-        options = "Under Construction"
+        options = ""
         count = 1
         for x in top_10:
             options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
