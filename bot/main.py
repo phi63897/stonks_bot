@@ -1,5 +1,6 @@
 import discord
 import os
+import sys
 import pymongo
 from pymongo import MongoClient
 from stockDict import stockDictGen
