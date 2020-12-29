@@ -403,7 +403,7 @@ async def on_message(message):
             for t,s in x["shares"].items():
                 stock = Stock(t, token = iex_token)
                 cur_price = stock.get_price().iat[0,0]
-                new_total += (cur_price*stock)
+                new_total += (cur_price*s)
             users_db.update_one({'user_id':x["user_id"]}, {'$set': {"total_assets": new_total}})
             # Check if value is greater than first..-> tenth ->shift
             for y in range(10):
