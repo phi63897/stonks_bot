@@ -235,6 +235,7 @@ async def on_message(message):
     
     # handle $portfolio command (View own or another's portfolio)
     elif message.content.startswith("$portfolio"):
+        user_id = message.author.id
         command = message.content.strip().split()
         mention = "<@{}>".format(message.author.id)
         if len(command) == 1:
@@ -244,6 +245,7 @@ async def on_message(message):
             # show selected user's portfolio
             mention = command[1]
             command[1] = command[1][3:-1]
+            user_id = int(command[1])
             lookup = users_db.find_one({"user_id": int(command[1])})
             if not lookup:
                 await message.channel.send("{}: Sorry that user does not exist :(".format(mention)) 
@@ -262,7 +264,7 @@ async def on_message(message):
                 cur_price = stock.get_price().iat[0,0]
                 info += "`{}`: {:.3f} | ${:,.2f}\n".format(ticker.upper(), shares, shares*cur_price )
                 new_total += shares*cur_price
-        users_db.update_one({'user_id':int(mention)}, {'$set': {"total_assets": new_total}})
+        users_db.update_one({'user_id':user_id}, {'$set': {"total_assets": new_total}})
         toEmbed.add_field(name = ":bank: Total Assets", value = "${:,.2f}".format(lookup["total_assets"]), inline=False)
         toEmbed.add_field(name = ":chart_with_upwards_trend: Shares", value = info, inline=False)
         await message.channel.send(embed=toEmbed)
