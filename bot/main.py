@@ -396,16 +396,29 @@ async def on_message(message):
             
     elif message.content.startswith("$leaderboard"):
         # Create a new field -> total assets
-        for x in users_db.find():
-            print(x)
         top_10 = []
-        # for k,v in users_db["shares"].items()
+        for x in users_db.find():
+            # Calculate total assets
+            new_total = x["balance"]
+            for t,s in x["shares"].items():
+                stock = Stock(ticker, token = iex_token)
+                cur_price = stock.get_price().iat[0,0]
+                new_total += (cur_price*stock)
+            users_db.update_one({'user_id':x["user_id"]}, {'$set': {"total_assets": new_total}})
+            # Check if value is greater than first..-> tenth ->shift
+            for y in range(10):
+                if new_total >= y:
+                    top_10.insert(y, x)
+                    break
+            if len(top_10) == 11:
+                top_10.pop()
+       
         toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
         options = "Under Construction"
         count = 1
-        #for x in top_10:
-        #    options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
-        #    count+=1
+        for x in top_10:
+            options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
+            count+=1
         toEmbed.add_field(name = "TOP 10", value= options)
         await message.channel.send(embed=toEmbed)
         
