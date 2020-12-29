@@ -399,13 +399,13 @@ async def on_message(message):
         for x in users_db.find():
             print(x)
         top_10 = []
-        for k,v in users_db["shares"].items()
+        # for k,v in users_db["shares"].items()
         toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
-        options = ""
+        options = "Under Construction"
         count = 1
-        for x in top_10:
-            options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
-            count+=1
+        #for x in top_10:
+        #    options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
+        #    count+=1
         toEmbed.add_field(name = "TOP 10", value= options)
         await message.channel.send(embed=toEmbed)
         
