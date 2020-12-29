@@ -397,7 +397,7 @@ async def on_message(message):
             
     elif message.content.startswith("$leaderboard"):
         # Create a new field -> total assets
-        top_10 = [-sys.maxsize]*10
+        top_10 = [{"total_assets":-sys.maxsize}]*10
         for x in users_db.find():
             # Calculate total assets
             new_total = x["balance"]
