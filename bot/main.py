@@ -265,7 +265,7 @@ async def on_message(message):
                 info += "`{}`: {:.3f} | ${:,.2f}\n".format(ticker.upper(), shares, shares*cur_price )
                 new_total += shares*cur_price
         users_db.update_one({'user_id':user_id}, {'$set': {"total_assets": new_total}})
-        toEmbed.add_field(name = ":bank: Total Assets", value = "${:,.2f}".format(lookup["total_assets"]), inline=False)
+        toEmbed.add_field(name = ":bank: Total Assets", value = "${:,.2f}".format(new_total), inline=False)
         toEmbed.add_field(name = ":chart_with_upwards_trend: Shares", value = info, inline=False)
         await message.channel.send(embed=toEmbed)
         return
