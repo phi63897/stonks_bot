@@ -418,6 +418,8 @@ async def on_message(message):
         toEmbed = discord.Embed(title="Leaderboard", description= "Highest amount of assets (balance + shares)")
         options = ""
         count = 1
+        # Time test
+        top_10.sort()
         for x in top_10:
             if x["user_id"] != None:
                 options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
