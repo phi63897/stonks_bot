@@ -419,7 +419,7 @@ async def on_message(message):
         options = ""
         count = 1
         # Time test
-        top_10.sort()
+        top_10.sort(lambda x : x["total_assets"])
         for x in top_10:
             if x["user_id"] != None:
                 options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
