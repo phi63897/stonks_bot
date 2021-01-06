@@ -196,7 +196,7 @@ async def on_message(message):
         #wait for user response to history menu
         msg = await client.wait_for('message', check=toCheck)
 
-        ticker = command[1]
+        ticker = command[1].lower()
         if msg.content == "1":
             weekNum = "52"
             start =  datetime.now() - relativedelta(years=1)
@@ -279,7 +279,7 @@ async def on_message(message):
         if len(command) != 3:
             await message.channel.send("Please use format $buy <ticker> <amount>")
             return
-        ticker = command[1]
+        ticker = command[1].lower()
         amount = float(command[2])
 
         try:
@@ -310,7 +310,7 @@ async def on_message(message):
         if len(command) != 3:
             await message.channel.send("{} Please use format $buy <ticker> <shares>".format(mention))
             return
-        ticker = command[1]
+        ticker = command[1].lower()
         shares = float(command[2])
 
         try:
@@ -341,7 +341,7 @@ async def on_message(message):
         if len(command) != 3:
             await message.channel.send("Please use format $sell <ticker> <amount>")
             return
-        ticker = command[1]
+        ticker = command[1].lower()
         amount = float(command[2])
         try:
             stock = Stock(ticker, token = iex_token)
@@ -372,7 +372,7 @@ async def on_message(message):
         if len(command) != 3:
             await message.channel.send("Please use format $sell <ticker> <amount>")
             return
-        ticker = command[1]
+        ticker = command[1].lower()
         shares = float(command[2])
         try:
             stock = Stock(ticker, token = iex_token)
