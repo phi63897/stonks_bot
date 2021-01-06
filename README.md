@@ -16,18 +16,18 @@ This is the initial $help command to help users use all commands available to th
 ![Image of Command](https://github.com/phi63897/stonks_bot/blob/main/images/command_1.PNG)
 List of all available commands.
 
-
+## Portfolio
 ![Image of Portfolio](https://github.com/phi63897/stonks_bot/blob/main/images/portfolio_1.PNG)
 This contains all the relevant stock and balance information for users. The command can also look at other's portfolios.
 
-
+# Buying
 ![Image of Dbuy](https://github.com/phi63897/stonks_bot/blob/main/images/dbuy_1.PNG)
-This is what happens when you use Dbuy command.
+This is what happens when you use Dbuy command. There is also an option to buy stock by stock amount.
 
-
+# Selling
 ![Image of Ssell](https://github.com/phi63897/stonks_bot/blob/main/images/ssell_1.PNG)
-This is what happens when you use Ssell command.
+This is what happens when you use Ssell command. There is also an option to sell stock by dollar amount.
 
-
+# Leaderboard
 ![Image of Leader](https://github.com/phi63897/stonks_bot/blob/main/images/leader_1.PNG)
 This command shows you the top 10 investors using this bot.
