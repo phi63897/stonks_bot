@@ -280,7 +280,7 @@ async def on_message(message):
             await message.channel.send("Please use format $buy <ticker> <amount>")
             return
         ticker = command[1].lower()
-        amount = float(command[2])
+        amount = float(command[2].replace("$", "").replace(",",""))
 
         try:
             stock = Stock(ticker, token = iex_token)
@@ -342,7 +342,7 @@ async def on_message(message):
             await message.channel.send("Please use format $sell <ticker> <amount>")
             return
         ticker = command[1].lower()
-        amount = float(command[2])
+        amount = float(command[2].replace("$", "").replace(",",""))
         try:
             stock = Stock(ticker, token = iex_token)
             cur_price = stock.get_price().iat[0,0]
