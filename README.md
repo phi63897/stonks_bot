@@ -8,3 +8,4 @@ To add this bot to your server click on this link:
         https://tinyurl.com/y5ud8q6c
 
 # Demo
+![Image of Help](https://github.com/phi63897/stonks_bot/blob/main/images/command_1.PNG)
