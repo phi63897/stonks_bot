@@ -97,7 +97,7 @@ async def on_message(message):
             await channel.send("{0.user} is a bot for helping beginner investors! We plan to add paper trading and helpful reference material for beginners!".format(client))
         elif msg.content == "2":
             temp = """1. `$dbuy ticker dollar_amount` \n 2. `$resource` \n 3. `$def term` 
-            4. `$dsell ticker dollar_amount` \n 5. `$price ticker`\n 6. `$portfolio` \n 7. `$leaderboard` \n`$sbuy ticker shares` \n `$dsell ticker shares`"""
+            4. `$dsell ticker dollar_amount` \n 5. `$price ticker`\n 6. `$portfolio` \n 7. `$leaderboard` \n 8. `$sbuy ticker shares` \n 9. `$dsell ticker shares`"""
             toEmbed = discord.Embed(title="Commands", description = temp)
             await channel.send(embed=toEmbed)
         elif msg.content == "3":
