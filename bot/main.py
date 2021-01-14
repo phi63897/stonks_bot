@@ -280,7 +280,10 @@ async def on_message(message):
             await message.channel.send("Please use format $buy <ticker> <amount>")
             return
         ticker = command[1].lower()
-        amount = float(command[2].replace("$", "").replace(",",""))
+        if command[2].lower() == "all":
+            amount = lookup["balance"]
+        else:
+            amount = float(command[2].replace("$", "").replace(",",""))
 
         try:
             stock = Stock(ticker, token = iex_token)
@@ -311,16 +314,22 @@ async def on_message(message):
             await message.channel.send("{} Please use format $buy <ticker> <shares>".format(mention))
             return
         ticker = command[1].lower()
-        shares = float(command[2])
+        if command[2].lower() != "all":
+            shares = float(command[2].replace("$", "").replace(",",""))
 
         try:
             stock = Stock(ticker, token = iex_token)
             cur_price = stock.get_price().iat[0,0]
+            check = True
             if cur_price == None:
                 await message.channel.send("Sorry the requested stock {} is unavailable".format(ticker.upper()))
+                check = False
+            elif command[2].lower() == "all":
+                shares = (lookup["balance"] / cur_price)
             elif shares*cur_price > lookup["balance"]:
                 await message.channel.send("Sorry the requested buy exceeds your balance!")
-            else:
+                check = False
+            if check:
                 new_balance = lookup["balance"] - shares*cur_price
                 if ticker in lookup["shares"]:
                     lookup["shares"][ticker] += shares
