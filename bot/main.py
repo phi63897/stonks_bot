@@ -416,7 +416,8 @@ async def on_message(message):
             
     elif message.content.startswith("$leaderboard"):
         # Create a new field -> total assets
-        top_10 = [{"user_id" : None, "total_assets":-sys.maxsize}]*10
+        #top_10 as list of (user_id, total_assets)
+        top_10 = [(None, -sys.maxsize)]*10
         for x in users_db.find():
             # Calculate total assets
             new_total = x["balance"]
@@ -424,11 +425,11 @@ async def on_message(message):
                 stock = Stock(t, token = iex_token)
                 cur_price = stock.get_price().iat[0,0]
                 new_total += (cur_price*s)
-            users_db.update_one({'user_id':x["user_id"]}, {'$set': {"total_assets": new_total}})
+            #users_db.update_one({'user_id':x["user_id"]}, {'$set': {"total_assets": new_total}})
             # Check if value is greater than first..-> tenth ->shift
             for y in range(10):
-                print(top_10[y]["total_assets"])
-                if new_total >= int(top_10[y]["total_assets"]):
+                #print(top_10[y]["total_assets"])
+                if new_total >= int(top_10[y][1]):
                     top_10.insert(y, x)
                     break
             if len(top_10) == 11:
@@ -438,10 +439,10 @@ async def on_message(message):
         options = ""
         count = 1
         # Time test
-        sorted(top_10, key = lambda i : i["total_assets"], reverse=True)
-        for x in top_10:
-            if x["user_id"] != None:
-                options += "{}. <@{}> : ${:,.2f} \n".format(count, x["user_id"], x["total_assets"])
+        #sorted(top_10, key = lambda i : i["total_assets"], reverse=True)
+        for item in top_10:
+            if item[0] != None:
+                options += "{}. <@{}> : ${:,.2f} \n".format(count, item[0], x[1])
                 count+=1
         toEmbed.add_field(name = "TOP 10", value= options)
         await message.channel.send(embed=toEmbed)
