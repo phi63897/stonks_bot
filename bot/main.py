@@ -429,7 +429,7 @@ async def on_message(message):
             # Check if value is greater than first..-> tenth ->shift
             for y in range(10):
                 #print(top_10[y]["total_assets"])
-                if new_total >= int(top_10[y][1]):
+                if new_total >= top_10[y][1]:
                     top_10.insert(y, (x,new_total))
                     break
             if len(top_10) == 11:
