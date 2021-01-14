@@ -342,10 +342,7 @@ async def on_message(message):
             await message.channel.send("Please use format $sell <ticker> <amount>")
             return
         ticker = command[1].lower()
-        if command[2].lower() == "all":
-            if ticker in lookup["shares"]:
-                amount = lookup["shares"][ticker] * cur_price
-        else:
+        if command[2].lower() != "all":
             amount = float(command[2].replace("$", "").replace(",",""))
         try:
             stock = Stock(ticker, token = iex_token)
@@ -354,6 +351,8 @@ async def on_message(message):
             # check if amount is valid (cannot sell more than you have)
             if ticker not in lookup["shares"]:
                 await message.channel.send("Sorry you do not own any shares of {}!".format(ticker.upper()))
+            elif command[2].lower() == "all":
+                amount = lookup["shares"][ticker] * cur_price
             elif amount > lookup["shares"][ticker] * cur_price:
                 await message.channel.send("Sorry the requested sell exceeds your amount of shares!")
             else:
