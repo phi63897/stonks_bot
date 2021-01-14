@@ -349,13 +349,16 @@ async def on_message(message):
             cur_price = stock.get_price().iat[0,0]
             # shares: {{appl: amount}, {nvda: amount}}
             # check if amount is valid (cannot sell more than you have)
+            check = True
             if ticker not in lookup["shares"]:
                 await message.channel.send("Sorry you do not own any shares of {}!".format(ticker.upper()))
+                check = False
             elif command[2].lower() == "all":
                 amount = lookup["shares"][ticker] * cur_price
             elif amount > lookup["shares"][ticker] * cur_price:
                 await message.channel.send("Sorry the requested sell exceeds your amount of shares!")
-            else:
+                check = False
+            if check:
                 shares = float(amount) / float(cur_price)
                 new_balance = lookup["balance"] + (shares * float(cur_price))
                 lookup["shares"][ticker] -= shares
