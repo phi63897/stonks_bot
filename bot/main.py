@@ -442,7 +442,7 @@ async def on_message(message):
         #sorted(top_10, key = lambda i : i["total_assets"], reverse=True)
         for item in top_10:
             if item[0] != None:
-                options += "{}. <@{}> : ${:,.2f} \n".format(count, item[0], item[1])
+                options += "{}. <@{}> : ${:,.2f} \n".format(count, item[0]["user_id"], item[1])
                 count+=1
         toEmbed.add_field(name = "TOP 10", value= options)
         await message.channel.send(embed=toEmbed)
