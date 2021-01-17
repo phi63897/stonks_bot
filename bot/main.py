@@ -419,15 +419,26 @@ async def on_message(message):
         # Return up to 10 stocks and their current price (print out graph)
         command = message.content.strip().split()
         lookup = get_user_info(message.author.id)
-        # New field for DB (watchlist)
         
         if (command[1] == "add"):
             # Check if command[2] is valid ticker
-            pass
-        
+            try:
+                stock = Stock(ticker, token = iex_token)
+                lookup["watchlist"].append(command[2])
+                
+                await message.channel.send(command[2], "has been added")
+            except:
+                await message.channel.send("Sorry the requested stock does not exist!")
+           
         elif (command[1] == "remove"):
             # Check if command[2] is valid ticker
-            pass
+            try:
+                stock = Stock(ticker, token = iex_token)
+                lookup["watchlist"].remove(command[2])
+                
+                await message.channel.send(command[2], "has been removed")
+            except:
+                await message.channel.send("Sorry the requested stock does not exist!")
         
         elif ("@" in command[1]):
             # Check if @ is valid or not
