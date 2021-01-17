@@ -423,7 +423,7 @@ async def on_message(message):
         lookup = get_user_info(message.author.id)
         if (len(command) == 1):
             # Display watchlist
-            toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist\n Available slots: {}/10".format(mention, len(lookup["watchlist"])))
+            toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist\n Available slots: {}/10".format(mention, 10-len(lookup["watchlist"])))
             options = ""
             if (len(lookup["watchlist"]) == 0):
                 options="You are not watching any stocks right now!"
@@ -471,7 +471,7 @@ async def on_message(message):
                     await message.channel.send("{}: Sorry that user does not exist :(".format(mention)) 
                 else:
                     # Display watchlist
-                    toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist\n Available slots: {}/10".format(mention, len(lookup["watchlist"])))
+                    toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist\n Available slots: {}/10".format(mention, 10-len(lookup["watchlist"])))
                     options = ""
                     if (len(lookup["watchlist"]) == 0):
                         options="This person is not watching any stocks right now!"
