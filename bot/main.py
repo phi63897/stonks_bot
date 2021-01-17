@@ -424,10 +424,12 @@ async def on_message(message):
         if (len(command) == 1):
             # Display watchlist
             toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist".format(mention))
-            options=""
+            options = ""
+            if (len(lookup["watchlist"] == 0):
+                options="You are not watching any stocks right now!"
             for i in range(len(lookup["watchlist"])):
                 options += "{}. `{}`\n".format(i, lookup["watchlist"][i])
-            toEmbed.add_field(name = "Test", value= options)
+            toEmbed.add_field(name = "------", value= options)
             await message.channel.send(embed=toEmbed)
             # React to view graph
         else:
