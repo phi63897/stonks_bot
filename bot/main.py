@@ -422,12 +422,16 @@ async def on_message(message):
         
         if (command[1] == "add"):
             # Check if command[2] is valid ticker
+            
             if (len(lookup["watchlist"]) == 10):
                 await message.channel.send("Sorry you have the maximum amount of stocks you can place on your watchlist!")
             else:
                 try:
                     stock = Stock(ticker, token = iex_token)
-                    lookup["watchlist"].append(command[2])
+                    if (command[2] in lookup["watchlist"]):
+                        await message.channel.send("You already have that stock on your watchlist!")
+                    else:
+                        lookup["watchlist"].append(command[2])
 
                     await message.channel.send(command[2], "has been added")
                 except:
