@@ -447,6 +447,7 @@ async def on_message(message):
                         await message.channel.send("You already have that stock on your watchlist!")
                     else:
                         lookup["watchlist"].append(ticker)
+                        users_db.update_one({'user_id':message.author.id}, {'$set': {"watchlist": lookup["watchlist"]}})
                         await message.channel.send("{} has been added.".format(ticker))
 
 
@@ -456,6 +457,7 @@ async def on_message(message):
                     await message.channel.send("Sorry the requested stock is not on your watchlist!")
                 else:
                     lookup["watchlist"].remove(command[2].lower())
+                    users_db.update_one({'user_id':message.author.id}, {'$set': {"watchlist": lookup["watchlist"]}})
                     await message.channel.send("{} has been removed.".format(command[2].lower()))
 
             elif ("@" in command[1]):
