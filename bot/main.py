@@ -98,7 +98,8 @@ async def on_message(message):
             await channel.send("{0.user} is a bot for helping beginner investors! We plan to add paper trading and helpful reference material for beginners!".format(client))
         elif msg.content == "2":
             temp = """1. `$dbuy ticker dollar_amount` \n 2. `$resource` \n 3. `$def term` 
-            4. `$dsell ticker dollar_amount` \n 5. `$price ticker`\n 6. `$portfolio` \n 7. `$leaderboard` \n 8. `$sbuy ticker shares` \n 9. `$dsell ticker shares`"""
+            4. `$dsell ticker dollar_amount` \n 5. `$price ticker`\n 6. `$portfolio` \n 7. `$leaderboard` \n 8. `$sbuy ticker shares` \n 9. `$dsell ticker shares`
+            10. `$watchlist [@/add/remove] [ticker]`"""
             toEmbed = discord.Embed(title="Commands", description = temp)
             await channel.send(embed=toEmbed)
         elif msg.content == "3":
@@ -418,6 +419,7 @@ async def on_message(message):
     elif message.content.startswith("$watchlist"):
         # Return up to 10 stocks and their current price (print out graph)
         command = message.content.strip().split()
+        mention = "<@{}>".format(message.author.id)
         lookup = get_user_info(message.author.id)
         
         if (command[1] == "add"):
@@ -427,6 +429,7 @@ async def on_message(message):
                 await message.channel.send("Sorry you have the maximum amount of stocks you can place on your watchlist!")
             else:
                 try:
+                    ticker = command[2].lower()
                     stock = Stock(ticker, token = iex_token)
                     if (command[2] in lookup["watchlist"]):
                         await message.channel.send("You already have that stock on your watchlist!")
@@ -440,7 +443,7 @@ async def on_message(message):
         elif (command[1] == "remove"):
             # Check if command[2] is valid ticker
             if (command[2] not in lookup["watchlist"]):
-                await message.channel.send("Sorry the requested stock does not exist!")
+                await message.channel.send("Sorry the requested stock is not on your watchlist!")
             else:
                 lookup["watchlist"].remove(command[2])
                 await message.channel.send(command[2], "has been removed")
@@ -451,7 +454,7 @@ async def on_message(message):
        
         else:
             # Display watchlist
-            toEmbed = discord.Embed(title="Watchlist", description="")
+            toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist".format(mention)
             options=""
             for i in range(len(lookup["watchlist"])):
                 options += "{}. `{}`".format(i, lookup["watchlist"][i])
