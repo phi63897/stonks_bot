@@ -421,37 +421,7 @@ async def on_message(message):
         command = message.content.strip().split()
         mention = "<@{}>".format(message.author.id)
         lookup = get_user_info(message.author.id)
-        
-        if (command[1] == "add"):
-            # Check if command[2] is valid ticker
-            
-            if (len(lookup["watchlist"]) == 10):
-                await message.channel.send("Sorry you have the maximum amount of stocks you can place on your watchlist!")
-            else:
-                ticker = command[2].lower()
-                try:  
-                    stock = Stock(ticker, token = iex_token)
-                    if (ticker in lookup["watchlist"]):
-                        await message.channel.send("You already have that stock on your watchlist!")
-                    else:
-                        lookup["watchlist"].append(ticker)
-                        await message.channel.send(ticker, "has been added")
-                except:
-                    await message.channel.send("Sorry the requested stock does not exist!")
-           
-        elif (command[1] == "remove"):
-            # Check if command[2] is valid ticker
-            if (command[2] not in lookup["watchlist"]):
-                await message.channel.send("Sorry the requested stock is not on your watchlist!")
-            else:
-                lookup["watchlist"].remove(command[2])
-                await message.channel.send(command[2], "has been removed")
-        
-        elif ("@" in command[1]):
-            # Check if @ is valid or not
-            pass
-       
-        else:
+        if (len(command) == 1):
             # Display watchlist
             toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist".format(mention))
             options=""
@@ -460,6 +430,38 @@ async def on_message(message):
             toEmbed.add(name="", value=options)
             await message.channel.send(embed=toEmbed)
             # React to view graph
+        else:
+            if (command[1] == "add"):
+                # Check if command[2] is valid ticker
+
+                if (len(lookup["watchlist"]) == 10):
+                    await message.channel.send("Sorry you have the maximum amount of stocks you can place on your watchlist!")
+                else:
+                    ticker = command[2].lower()
+                    try:  
+                        stock = Stock(ticker, token = iex_token)
+                        if (ticker in lookup["watchlist"]):
+                            await message.channel.send("You already have that stock on your watchlist!")
+                        else:
+                            lookup["watchlist"].append(ticker)
+                            await message.channel.send(ticker, "has been added")
+                    except:
+                        await message.channel.send("Sorry the requested stock does not exist!")
+
+            elif (command[1] == "remove"):
+                # Check if command[2] is valid ticker
+                if (command[2] not in lookup["watchlist"]):
+                    await message.channel.send("Sorry the requested stock is not on your watchlist!")
+                else:
+                    lookup["watchlist"].remove(command[2])
+                    await message.channel.send(command[2], "has been removed")
+
+            elif ("@" in command[1]):
+                # Check if @ is valid or not
+                pass
+
+            else:
+                pass
             
             
     elif message.content.startswith("$leaderboard"):
