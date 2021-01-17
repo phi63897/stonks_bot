@@ -427,7 +427,7 @@ async def on_message(message):
             options=""
             for i in range(len(lookup["watchlist"])):
                 options += "{}. `{}`\n".format(i, lookup["watchlist"][i])
-            toEmbed.add_field(name="-------", value=options)
+            toEmbed.add_field(name = "Test", value= options)
             await message.channel.send(embed=toEmbed)
             # React to view graph
         else:
