@@ -454,7 +454,7 @@ async def on_message(message):
        
         else:
             # Display watchlist
-            toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist".format(mention)
+            toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist".format(mention))
             options=""
             for i in range(len(lookup["watchlist"])):
                 options += "{}. `{}`".format(i, lookup["watchlist"][i])
