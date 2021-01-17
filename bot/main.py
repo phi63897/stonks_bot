@@ -53,7 +53,8 @@ def get_user_info(user):
         post = {"user_id": user, 
                 "balance": 100000, 
                 "shares": {},
-                "total_assets": 100000
+                "total_assets": 100000,
+                "watchlist":[]
                 } # ex. {appl: {type: type, amt: int}}
         users_db.insert_one(post)
         return post
@@ -414,8 +415,26 @@ async def on_message(message):
         except:
             await message.channel.send("Sorry the requested stock does not exist!")
             
-    elif message.content.startswith("$watchlist"):
+    elif message.content.startwswith("$watchlist"):
         # Return up to 10 stocks and their current price (print out graph)
+        command = message.content.strip().split()
+        lookup = get_user_info(message.author.id)
+        # New field for DB (watchlist)
+        
+        if (command[1] == "add"):
+            # Check if command[2] is valid ticker
+            pass
+        
+        elif (command[1] == "remove"):
+            # Check if command[2] is valid ticker
+            pass
+        
+        elif ("@" in command[1]):
+            # Check if @ is valid or not
+            pass
+        
+        else:
+            pass
         pass
             
     elif message.content.startswith("$leaderboard"):
