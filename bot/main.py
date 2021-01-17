@@ -426,27 +426,27 @@ async def on_message(message):
             toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist".format(mention))
             options=""
             for i in range(len(lookup["watchlist"])):
-                options += "{}. `{}`".format(i, lookup["watchlist"][i])
-            toEmbed.add_field(name="", value=options)
+                options += "{}. `{}`\n".format(i, lookup["watchlist"][i])
+            toEmbed.add_field(name="--------", value=options)
             await message.channel.send(embed=toEmbed)
             # React to view graph
         else:
             if (command[1] == "add"):
                 # Check if command[2] is valid ticker
-
                 if (len(lookup["watchlist"]) == 10):
                     await message.channel.send("Sorry you have the maximum amount of stocks you can place on your watchlist!")
                 else:
                     ticker = command[2].lower()
                     try:  
                         stock = Stock(ticker, token = iex_token)
-                        if (ticker in lookup["watchlist"]):
-                            await message.channel.send("You already have that stock on your watchlist!")
-                        else:
-                            lookup["watchlist"].append(ticker)
-                            await message.channel.send(ticker, "has been added.")
                     except:
                         await message.channel.send("Sorry the requested stock does not exist!")
+                    if (ticker in lookup["watchlist"]):
+                        await message.channel.send("You already have that stock on your watchlist!")
+                    else:
+                        lookup["watchlist"].append(ticker)
+                        await message.channel.send(ticker, "has been added.")
+
 
             elif (command[1] == "remove"):
                 # Check if command[2] is valid ticker
