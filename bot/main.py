@@ -422,23 +422,24 @@ async def on_message(message):
         
         if (command[1] == "add"):
             # Check if command[2] is valid ticker
-            try:
-                stock = Stock(ticker, token = iex_token)
-                lookup["watchlist"].append(command[2])
-                
-                await message.channel.send(command[2], "has been added")
-            except:
-                await message.channel.send("Sorry the requested stock does not exist!")
+            if (len(lookup["watchlist"]) == 10):
+                await message.channel.send("Sorry you have the maximum amount of stocks you can place on your watchlist!")
+            else:
+                try:
+                    stock = Stock(ticker, token = iex_token)
+                    lookup["watchlist"].append(command[2])
+
+                    await message.channel.send(command[2], "has been added")
+                except:
+                    await message.channel.send("Sorry the requested stock does not exist!")
            
         elif (command[1] == "remove"):
             # Check if command[2] is valid ticker
-            try:
-                stock = Stock(ticker, token = iex_token)
-                lookup["watchlist"].remove(command[2])
-                
-                await message.channel.send(command[2], "has been removed")
-            except:
+            if (command[2] not in lookup["watchlist"]):
                 await message.channel.send("Sorry the requested stock does not exist!")
+            else:
+                lookup["watchlist"].remove(command[2])
+                await message.channel.send(command[2], "has been removed")
         
         elif ("@" in command[1]):
             # Check if @ is valid or not
