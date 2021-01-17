@@ -439,7 +439,7 @@ async def on_message(message):
         
             #wait for user response to help menu
             msg = await client.wait_for('message', check=toCheck)
-            if (int(msg.content) < len(lookup["watchlist"])):
+            if (int(msg.content) <= len(lookup["watchlist"])):
                 # print out graph
                 weekNum = "1"
                 start =  datetime.now() - relativedelta(days=7)
