@@ -414,6 +414,10 @@ async def on_message(message):
         except:
             await message.channel.send("Sorry the requested stock does not exist!")
             
+    elif message.content.startwswith("$watchlist"):
+        # Return up to 10 stocks and their current price (use parallel calculations to get their current price)
+        pass
+            
     elif message.content.startswith("$leaderboard"):
         # Create a new field -> total assets
         #top_10 as list of (user_id, total_assets)
