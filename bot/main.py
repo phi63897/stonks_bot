@@ -415,7 +415,7 @@ async def on_message(message):
             await message.channel.send("Sorry the requested stock does not exist!")
             
     elif message.content.startwswith("$watchlist"):
-        # Return up to 10 stocks and their current price (use parallel calculations to get their current price)
+        # Return up to 10 stocks and their current price (print out graph)
         pass
             
     elif message.content.startswith("$leaderboard"):
