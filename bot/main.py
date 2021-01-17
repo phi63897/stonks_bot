@@ -423,15 +423,15 @@ async def on_message(message):
         lookup = get_user_info(message.author.id)
         if (len(command) == 1):
             # Display watchlist
-            toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist".format(mention))
+            toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist\n Available slots: {}/10".format(mention, len(lookup["watchlist"])))
             options = ""
             if (len(lookup["watchlist"]) == 0):
                 options="You are not watching any stocks right now!"
             for i in range(len(lookup["watchlist"])):
-                options += "{}. `{}`\n".format(i, lookup["watchlist"][i])
+                options += "{}. `{}.upper()`\n".format((i+1), lookup["watchlist"][i])
             toEmbed.add_field(name = "------", value= options)
             await message.channel.send(embed=toEmbed)
-            # React to view graph
+            # Type in number to view graph or react
         else:
             if (command[1] == "add"):
                 # Check if command[2] is valid ticker
