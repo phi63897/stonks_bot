@@ -427,7 +427,7 @@ async def on_message(message):
             options=""
             for i in range(len(lookup["watchlist"])):
                 options += "{}. `{}`".format(i, lookup["watchlist"][i])
-            toEmbed.add(name="", value=options)
+            toEmbed.add_field(name="", value=options)
             await message.channel.send(embed=toEmbed)
             # React to view graph
         else:
@@ -444,7 +444,7 @@ async def on_message(message):
                             await message.channel.send("You already have that stock on your watchlist!")
                         else:
                             lookup["watchlist"].append(ticker)
-                            await message.channel.send(ticker, "has been added")
+                            await message.channel.send(ticker, "has been added.")
                     except:
                         await message.channel.send("Sorry the requested stock does not exist!")
 
@@ -454,14 +454,13 @@ async def on_message(message):
                     await message.channel.send("Sorry the requested stock is not on your watchlist!")
                 else:
                     lookup["watchlist"].remove(command[2])
-                    await message.channel.send(command[2], "has been removed")
+                    await message.channel.send(command[2], "has been removed.")
 
             elif ("@" in command[1]):
                 # Check if @ is valid or not
                 pass
-
             else:
-                pass
+                await message.channel.send("That is not a valid command!")
             
             
     elif message.content.startswith("$leaderboard"):
