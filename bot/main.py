@@ -431,14 +431,11 @@ async def on_message(message):
                 ticker = command[2].lower()
                 try:  
                     stock = Stock(ticker, token = iex_token)
-                    print(1)
-                    if (command[2] in lookup["watchlist"]):
+                    if (ticker in lookup["watchlist"]):
                         await message.channel.send("You already have that stock on your watchlist!")
                     else:
-                        lookup["watchlist"].append(command[2])
-                    print(2)
-
-                    await message.channel.send(command[2], "has been added")
+                        lookup["watchlist"].append(ticker)
+                        await message.channel.send(ticker, "has been added")
                 except:
                     await message.channel.send("Sorry the requested stock does not exist!")
            
