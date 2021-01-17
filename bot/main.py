@@ -473,7 +473,7 @@ async def on_message(message):
                 toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist\n Available slots: {}/10".format(mention, len(lookup["watchlist"])))
                 options = ""
                 if (len(lookup["watchlist"]) == 0):
-                    options="You are not watching any stocks right now!"
+                    options="This person is not watching any stocks right now!"
                 for i in range(len(lookup["watchlist"])):
                     options += "{}. `{}`\n".format((i+1), lookup["watchlist"][i].upper())
                 toEmbed.add_field(name = "------", value= options)
