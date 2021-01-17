@@ -430,6 +430,7 @@ async def on_message(message):
             else:
                 try:
                     ticker = command[2].lower()
+                    print(ticker)
                     stock = Stock(ticker, token = iex_token)
                     if (command[2] in lookup["watchlist"]):
                         await message.channel.send("You already have that stock on your watchlist!")
