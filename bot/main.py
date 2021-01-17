@@ -428,10 +428,11 @@ async def on_message(message):
             if (len(lookup["watchlist"]) == 0):
                 options="You are not watching any stocks right now!"
             for i in range(len(lookup["watchlist"])):
-                options += "{}. `{}.upper()`\n".format((i+1), lookup["watchlist"][i])
+                options += "{}. `{}`\n".format((i+1), lookup["watchlist"][i].upper())
             toEmbed.add_field(name = "------", value= options)
             await message.channel.send(embed=toEmbed)
             # Type in number to view graph or react
+        
         else:
             if (command[1] == "add"):
                 # Check if command[2] is valid ticker
@@ -462,7 +463,23 @@ async def on_message(message):
 
             elif ("@" in command[1]):
                 # Check if @ is valid or not
-                pass
+                mention = command[1]
+                command[1] = command[1][3:-1]
+                user_id = int(command[1])
+                lookup = users_db.find_one({"user_id": int(command[1])})
+            if not lookup:
+                await message.channel.send("{}: Sorry that user does not exist :(".format(mention)) 
+                # Display watchlist
+                toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist\n Available slots: {}/10".format(mention, len(lookup["watchlist"])))
+                options = ""
+                if (len(lookup["watchlist"]) == 0):
+                    options="You are not watching any stocks right now!"
+                for i in range(len(lookup["watchlist"])):
+                    options += "{}. `{}`\n".format((i+1), lookup["watchlist"][i].upper())
+                toEmbed.add_field(name = "------", value= options)
+                await message.channel.send(embed=toEmbed)
+                # Type in number to view graph or react
+                
             else:
                 await message.channel.send("That is not a valid command!")
             
