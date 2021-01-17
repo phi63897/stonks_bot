@@ -447,16 +447,16 @@ async def on_message(message):
                         await message.channel.send("You already have that stock on your watchlist!")
                     else:
                         lookup["watchlist"].append(ticker)
-                        await message.channel.send(ticker, "has been added.")
+                        await message.channel.send("{} has been added.".format(ticker))
 
 
             elif (command[1] == "remove"):
                 # Check if command[2] is valid ticker
-                if (command[2] not in lookup["watchlist"]):
+                if (command[2].lower() not in lookup["watchlist"]):
                     await message.channel.send("Sorry the requested stock is not on your watchlist!")
                 else:
-                    lookup["watchlist"].remove(command[2])
-                    await message.channel.send(command[2], "has been removed.")
+                    lookup["watchlist"].remove(command[2].lower())
+                    await message.channel.send("{} has been removed.".format(command[2].lower()))
 
             elif ("@" in command[1]):
                 # Check if @ is valid or not
