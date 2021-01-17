@@ -432,6 +432,44 @@ async def on_message(message):
             toEmbed.add_field(name = "------", value= options)
             await message.channel.send(embed=toEmbed)
             # Type in number to view graph or react
+            def toCheck(mes):
+                optionNum = ["1","2","3","4","5","6","7","8","9","10"]
+                return (mes.content in optionNum) and mes.channel == channel
+        
+            #wait for user response to help menu
+            msg = await client.wait_for('message', check=toCheck)
+            if (int(msg.content) < len(lookup["watchlist"])):
+                # print out graph
+                weekNum = "1"
+                start =  datetime.now() - relativedelta(days=7)
+
+                end = datetime.now() - relativedelta(days=1)
+                try:
+                    ticker = lookup["watchlist"][int(msg.content)-1].lower()
+                    stock = Stock(ticker, token = iex_token)
+                    cur_price = stock.get_price().iat[0,0]
+                    df = get_historical_data(ticker, start, end, output_format='pandas', token=iex_token)
+                    df['close'].plot()
+                    plt.figure(figsize=(10,10))
+                    plt.plot(df.index, df['close'])
+                    plt.xlabel("date")
+                    plt.ylabel("$ price")
+                    plt.title("{} {}-Week Stock Price".format(ticker.upper(), weekNum))
+                    plt.savefig('price.png')
+                    with open('price.png', 'rb') as f:
+                        file = io.BytesIO(f.read())
+                    image = discord.File(file, filename='price.png')
+
+                    toEmbed = discord.Embed(title='{} {} Week Closing Price History'.format(ticker.upper(), weekNum))
+                    toEmbed.add_field(name = "{}".format(ticker.upper()), value = "Current Price: {}".format(cur_price))
+                    toEmbed.set_image(url=f'attachment://price.png')
+                    await message.channel.send(file=image, embed=toEmbed)
+                except:
+                    await message.channel.send("Sorry {} is an invalid ticker".format(ticker.upper()))
+                # Future plans: 
+                # Able to react <-/-> to navigate left and right to view graphs
+                # Add the ability to continue to take numbers to keep jumping; also to remove users having to call $watchlist multiple times
+                pass
         
         else:
             if (command[1] == "add"):
