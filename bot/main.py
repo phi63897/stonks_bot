@@ -425,7 +425,7 @@ async def on_message(message):
             # Display watchlist
             toEmbed = discord.Embed(title="Watchlist", description="{}'s watchlist".format(mention))
             options = ""
-            if (len(lookup["watchlist"] == 0):
+            if (len(lookup["watchlist"]) == 0):
                 options="You are not watching any stocks right now!"
             for i in range(len(lookup["watchlist"])):
                 options += "{}. `{}`\n".format(i, lookup["watchlist"][i])
