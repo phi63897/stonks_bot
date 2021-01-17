@@ -415,7 +415,7 @@ async def on_message(message):
         except:
             await message.channel.send("Sorry the requested stock does not exist!")
             
-    elif message.content.startwswith("$watchlist"):
+    elif message.content.startswith("$watchlist"):
         # Return up to 10 stocks and their current price (print out graph)
         command = message.content.strip().split()
         lookup = get_user_info(message.author.id)
@@ -443,10 +443,17 @@ async def on_message(message):
         elif ("@" in command[1]):
             # Check if @ is valid or not
             pass
-        
+       
         else:
-            pass
-        pass
+            # Display watchlist
+            toEmbed = discord.Embed(title="Watchlist", description="")
+            options=""
+            for i in range(len(lookup["watchlist"])):
+                options += "{}. `{}`".format(i, lookup["watchlist"][i])
+            toEmbed.add(name="", value=options)
+            await message.channel.send(embed=toEmbed)
+            # React to view graph
+            
             
     elif message.content.startswith("$leaderboard"):
         # Create a new field -> total assets
